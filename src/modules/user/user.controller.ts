@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtGuard } from 'src/providers/guards/jwt.guard';
@@ -23,7 +23,7 @@ export class UserController {
     return await this.userService.getById(user_id);
   }
 
-  @Put('update')
+  @Patch('update')
   @Message('Success update your profile')
   @UseGuards(JwtGuard)
   async updateProfile(
