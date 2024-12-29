@@ -15,5 +15,6 @@ import { JwtGuard } from 'src/providers/guards/jwt.guard';
     },
   ],
   controllers: [PostController],
+  exports: [PostService],
 })
 export class PostModule {}
