@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User{
+  id String @id @default(uuid())
+  email String @unique
+  username String
+  password String
+
+  followers Follow[] @relation("Followers")
+  following Follow[] @relation("Following")
+
+  comments Comment[]
+  posts Post[]
+
+  @@map("users")
+}
+
+model Post{
+  id String @id @default(uuid())
+  content String @db.Text
+  created_at DateTime @default(now())
+
+  user_id String
+  user User @relation(fields: [user_id], references: [id])  
+
+  comments Comment[]
+
+  @@map("posts")
+}
+
+model Comment{
+  id String @id @default(uuid())
+  content String @db.VarChar(255)
+  created_at DateTime @default(now())
+
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+  post_id String
+  post Post @relation(fields: [post_id], references: [id])
+
+  @@map("comments")
+}
+
+model Follow{
+  id String @id @default(uuid())
+  user_id String 
+  follow_user_id String
+
+  user User @relation("Following", fields: [user_id], references: [id])
+  followed_user User @relation("Followers", fields: [follow_user_id], references: [id])
+
+  @@unique([user_id,follow_user_id])
+  @@map("follows")
+}
