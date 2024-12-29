@@ -17,6 +17,9 @@ export class CommentService {
     post_id,
     content,
   }: CreatePostDto & { user_id: string; post_id: string }): Promise<Comment> {
+    const post = await this.postService.getPostById(post_id);
+    if (!post) throw new NotFoundException('Post not found!');
+
     return await this.prismaService.comment.create({
       data: {
         content,
