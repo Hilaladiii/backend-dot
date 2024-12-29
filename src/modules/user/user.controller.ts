@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtGuard } from 'src/providers/guards/jwt.guard';
@@ -20,7 +29,7 @@ export class UserController {
   @Message('Success get your profile')
   @UseGuards(JwtGuard)
   async getProfile(@GetCurrentUserId() user_id: string) {
-    return await this.userService.getById(user_id);
+    return await this.userService.getUserProfile(user_id);
   }
 
   @Patch('update')
@@ -34,5 +43,25 @@ export class UserController {
       id: user_id,
       ...updateUserDto,
     });
+  }
+
+  @Post('follow/:id')
+  @Message('Success follow user')
+  @UseGuards(JwtGuard)
+  async follow(
+    @GetCurrentUserId() user_id: string,
+    @Param('id') follow_user_id: string,
+  ) {
+    return await this.userService.followUser(user_id, follow_user_id);
+  }
+
+  @Delete('unfollow/:id')
+  @Message('Success unfollow user')
+  @UseGuards(JwtGuard)
+  async unFollow(
+    @GetCurrentUserId() user_id: string,
+    @Param('id') follow_user_id: string,
+  ) {
+    return await this.userService.unFollowUser(user_id, follow_user_id);
   }
 }

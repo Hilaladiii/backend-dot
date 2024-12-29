@@ -6,12 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { Message } from 'src/commons/decorators/message.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { GetCurrentUserId } from 'src/commons/decorators/get-current-user-id.decorator';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { JwtGuard } from 'src/providers/guards/jwt.guard';
 
 @Controller('post')
 export class PostController {
@@ -19,6 +21,7 @@ export class PostController {
 
   @Post('create')
   @Message('Success create post')
+  @UseGuards(JwtGuard)
   async create(
     @GetCurrentUserId() user_id: string,
     @Body() createPostDto: CreatePostDto,
@@ -28,6 +31,7 @@ export class PostController {
 
   @Patch('update/:id')
   @Message('Succes update post')
+  @UseGuards(JwtGuard)
   async update(
     @Param('id') post_id: string,
     @GetCurrentUserId() user_id: string,
@@ -42,17 +46,20 @@ export class PostController {
 
   @Get()
   @Message('Success get user posts')
+  @UseGuards(JwtGuard)
   async getUserPosts(@GetCurrentUserId() user_id: string) {
     return await this.postService.getUserPost(user_id);
   }
 
   @Get('following')
+  @UseGuards(JwtGuard)
   async getFollowingPosts(@GetCurrentUserId() user_id: string) {
     return await this.postService.getFollowingPosts(user_id);
   }
 
   @Delete('delete/:id')
   @Message('Success delete your post')
+  @UseGuards(JwtGuard)
   async delete(@Param('id') id: string, @GetCurrentUserId() user_id: string) {
     return await this.postService.deleteUserPost(id, user_id);
   }

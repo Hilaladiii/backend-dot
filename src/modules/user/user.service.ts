@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from '@prisma/client';
+import { Follow, User } from '@prisma/client';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { TUserProfile } from 'src/commons/types/user.type';
 import * as bcrypt from 'bcryptjs';
@@ -126,6 +126,40 @@ export class UserService {
       select: {
         email: true,
         username: true,
+      },
+    });
+  }
+
+  async followUser(user_id: string, follow_user_id: string): Promise<Follow> {
+    const user = await this.getById(follow_user_id);
+    if (!user) throw new NotFoundException('User not found!');
+
+    return await this.prismaService.follow.create({
+      data: {
+        user: {
+          connect: {
+            id: user_id,
+          },
+        },
+        followed_user: {
+          connect: {
+            id: follow_user_id,
+          },
+        },
+      },
+    });
+  }
+
+  async unFollowUser(user_id: string, follow_user_id: string): Promise<Follow> {
+    const user = await this.getById(follow_user_id);
+    if (!user) throw new NotFoundException('User not found!');
+
+    return await this.prismaService.follow.delete({
+      where: {
+        user_id_follow_user_id: {
+          user_id,
+          follow_user_id,
+        },
       },
     });
   }
