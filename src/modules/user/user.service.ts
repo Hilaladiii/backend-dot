@@ -47,7 +47,17 @@ export class UserService {
     return await this.prismaService.user.findMany();
   }
 
-  async getById(id: string): Promise<TUserProfile> {
+  async getById(id: string): Promise<User> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  }
+
+  async getUserProfile(id: string): Promise<TUserProfile> {
     const user = await this.prismaService.user.findUnique({
       where: {
         id,
@@ -81,11 +91,7 @@ export class UserService {
     username: string;
     email: string;
   }> {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
-    });
+    const user = await this.getById(id);
 
     if (!user) throw new NotFoundException('User not found, Update failed!');
 
@@ -108,11 +114,7 @@ export class UserService {
   }
 
   async remove(id: string): Promise<{ username: string; email: string }> {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
-    });
+    const user = await this.getById(id);
 
     if (!user)
       throw new NotFoundException('User not found, Delete account failed!');
