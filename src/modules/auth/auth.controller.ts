@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { Message } from 'src/commons/decorators/message.decorator';
+import { Message } from '../../commons/decorators/message.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +11,7 @@ export class AuthController {
   @Message('Success login into your account')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto) {
-    return await this.authService.login(loginDto);
+    const token = await this.authService.login(loginDto);
+    return { token };
   }
 }
