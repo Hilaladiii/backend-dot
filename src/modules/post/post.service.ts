@@ -113,14 +113,37 @@ export class PostService {
       );
     const posts = await this.prismaService.post.findMany({
       where: {
-        user_id: user.id,
         user: {
-          following: {
+          followers: {
             some: {
-              follow_user_id: user.id,
+              user_id: user.id,
             },
           },
         },
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            email: true,
+          },
+        },
+        comments: {
+          select: {
+            content: true,
+            created_at: true,
+            id: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        created_at: 'desc',
       },
     });
 
