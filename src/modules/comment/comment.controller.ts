@@ -9,11 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { Message } from 'src/commons/decorators/message.decorator';
-import { JwtGuard } from 'src/providers/guards/jwt.guard';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { GetCurrentUserId } from 'src/commons/decorators/get-current-user-id.decorator';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { JwtGuard } from '../../providers/guards/jwt.guard';
+import { GetCurrentUserId } from '../../commons/decorators/get-current-user-id.decorator';
+import { Message } from '../../commons/decorators/message.decorator';
 
 @Controller('comment')
 export class CommentController {

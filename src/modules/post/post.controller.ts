@@ -9,11 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { Message } from 'src/commons/decorators/message.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
-import { GetCurrentUserId } from 'src/commons/decorators/get-current-user-id.decorator';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { JwtGuard } from 'src/providers/guards/jwt.guard';
+import { JwtGuard } from '../../providers/guards/jwt.guard';
+import { GetCurrentUserId } from '../../commons/decorators/get-current-user-id.decorator';
+import { Message } from '../../commons/decorators/message.decorator';
 
 @Controller('post')
 export class PostController {

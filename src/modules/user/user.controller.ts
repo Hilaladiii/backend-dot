@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { JwtGuard } from 'src/providers/guards/jwt.guard';
-import { GetCurrentUserId } from 'src/commons/decorators/get-current-user-id.decorator';
-import { Message } from 'src/commons/decorators/message.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtGuard } from '../../providers/guards/jwt.guard';
+import { GetCurrentUserId } from '../../commons/decorators/get-current-user-id.decorator';
+import { Message } from '../../commons/decorators/message.decorator';
 
 @Controller('user')
 export class UserController {
