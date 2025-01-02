@@ -64,4 +64,18 @@ export class UserController {
   ) {
     return await this.userService.unFollowUser(user_id, follow_user_id);
   }
+
+  @Get('followers')
+  @Message('Success get followers')
+  @UseGuards(JwtGuard)
+  async getFollowers(@GetCurrentUserId() user_id: string) {
+    return await this.userService.getFollowers(user_id);
+  }
+
+  @Get('following')
+  @Message('Success get following')
+  @UseGuards(JwtGuard)
+  async getFollowing(@GetCurrentUserId() user_id: string) {
+    return await this.userService.getFollowing(user_id);
+  }
 }

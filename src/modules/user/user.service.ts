@@ -163,4 +163,52 @@ export class UserService {
       },
     });
   }
+
+  async getFollowers(user_id: string) {
+    const user = await this.getById(user_id);
+    if (!user) throw new NotFoundException('User not found!');
+
+    const followers = await this.prismaService.follow.findMany({
+      where: {
+        follow_user_id: user_id,
+      },
+      select: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    return followers.map((follower) => ({
+      id: follower.user.id,
+      username: follower.user.username,
+    }));
+  }
+
+  async getFollowing(user_id: string) {
+    const user = await this.getById(user_id);
+    if (!user) throw new NotFoundException('User not found!');
+
+    const followings = await this.prismaService.follow.findMany({
+      where: {
+        user_id,
+      },
+      select: {
+        followed_user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    return followings.map((follow) => ({
+      id: follow.followed_user.id,
+      username: follow.followed_user.username,
+    }));
+  }
 }
