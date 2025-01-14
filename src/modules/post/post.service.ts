@@ -65,9 +65,16 @@ export class PostService {
     if (!user)
       throw new NotFoundException("User not found, can't update post!");
 
-    const post = await this.prismaService.post.findUnique({
+    const post = await this.prismaService.post.findFirst({
       where: {
-        id: post_id,
+        AND: [
+          {
+            id: post_id,
+          },
+          {
+            user_id: user.id,
+          },
+        ],
       },
     });
 
