@@ -1,4 +1,6 @@
-## Alasan Menggunakan Arsitektur Tersebut dalam Aplikasi Backend dengan NestJS
+![image](https://github.com/user-attachments/assets/bec3a839-2872-43ec-8df9-8420d26d0413)
+
+## Alasan Menggunakan Arsitektur Tersebut
 
 Saya menggunakan arsitektur tersebut untuk menjaga kerapihan, keteraturan, dan skalabilitas dalam pengembangan aplikasi. Struktur tersebut akan memudahkan dalam pengelolaan kode, berikut alasannya:
 
